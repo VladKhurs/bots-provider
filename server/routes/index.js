@@ -1,0 +1,9 @@
+const Router = require('express')
+const router = new Router()
+const userRouter = require('./userRouter')
+const userInfoRouter = require('./userInfoRouter')
+
+router.use('/user', userRouter)
+router.use('/user_info', userInfoRouter)
+
+module.exports = router

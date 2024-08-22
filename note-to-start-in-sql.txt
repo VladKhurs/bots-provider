@@ -1,0 +1,11 @@
+change .env
+change db.js
+
+npm install mysql2
+создать БД в phpMyAdmin, поместить название бд в .env
+
+
+|| deviceController.js
+    37 limit = Number(limit)
+
+
