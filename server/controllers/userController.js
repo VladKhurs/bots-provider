@@ -34,10 +34,6 @@ class UserController {
             email, 
             role, 
             password: hashPassword,
-        })
-        //const basket = await Basket.create({userId: user.id})
-        const userInfo = await UserInfo.create({
-            userId: user.id, 
             userName, 
             companyName, 
             companyPhone, 
