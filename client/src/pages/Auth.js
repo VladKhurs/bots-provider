@@ -16,6 +16,10 @@ const Auth = observer(() => {
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [userName, setUserName] = useState('')
+    const [companyName, setCompanyName] = useState('')
+    const [companyPhone, setCompanyPhone] = useState('')
+    const [companyAddress, setCompanyAddress] = useState('')
 
     const click = async () => {
         try {
@@ -23,7 +27,14 @@ const Auth = observer(() => {
             if (isLogin) {
                 data = await login(email, password);
             } else {
-                data = await registration(email, password);
+                data = await registration(
+                    email, 
+                    password, 
+                    userName,
+                    companyName,
+                    companyPhone,
+                    companyAddress
+                );
             }
             user.setUser(user)
             user.setIsAuth(true)
@@ -55,6 +66,37 @@ const Auth = observer(() => {
                         onChange={e => setPassword(e.target.value)}
                         type="password"
                     />
+                    {
+                        !isLogin ? 
+                        <>
+                            <Form.Control
+                                className="mt-3"
+                                placeholder="Введите ваше имя..."
+                                value={userName}
+                                onChange={e => setUserName(e.target.value)}
+                            />
+                            <Form.Control
+                                className="mt-3"
+                                placeholder="Введите имя компании..."
+                                value={companyName}
+                                onChange={e => setCompanyName(e.target.value)}
+                            />
+                            <Form.Control
+                                className="mt-3"
+                                placeholder="Введите телефон компании..."
+                                value={companyPhone}
+                                onChange={e => setCompanyPhone(e.target.value)}
+                            />
+                            <Form.Control
+                                className="mt-3"
+                                placeholder="Введите адрес компании..."
+                                value={companyAddress}
+                                onChange={e => setCompanyAddress(e.target.value)}
+                            />
+                        </>
+                        : 
+                        <></>
+                    }
                     <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
                         {isLogin ?
                             <div>

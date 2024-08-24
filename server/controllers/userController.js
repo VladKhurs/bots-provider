@@ -20,7 +20,7 @@ class UserController {
             userName, 
             companyName, 
             companyPhone, 
-            companyAddress
+            companyAddress,
         } = req.body
         if (!email || !password) {
             return next(ApiError.badRequest('Некорректный email или password'))
@@ -37,7 +37,8 @@ class UserController {
             userName, 
             companyName, 
             companyPhone, 
-            companyAddress
+            companyAddress,
+            tarifId: 1
         })
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
@@ -60,6 +61,18 @@ class UserController {
     async check(req, res, next) {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
         return res.json({token})
+    }
+
+    async info(req, res) {
+        const {email} = req.body
+        const {
+            userName,
+            companyName,
+            companyPhone,
+            companyAddress,
+            tarifId
+        } = await User.findOne({where: {email}})
+        return res.json({userName, companyName, companyPhone, companyAddress, tarifId})
     }
 }
 
