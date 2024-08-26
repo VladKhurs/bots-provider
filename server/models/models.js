@@ -1,19 +1,19 @@
 const sequelize = require('../db')
 const {DataTypes} = require('sequelize')
-const { TARITFS } = require('../utils/consts')
 
 const User = sequelize.define('user', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     email: {type: DataTypes.STRING, unique: true,},
     password: {type: DataTypes.STRING},
-    userName: { type: DataTypes.STRING, allowNull: false },
-    companyName: { type: DataTypes.STRING, allowNull: false },
-    companyPhone: { type: DataTypes.STRING, allowNull: false },
-    companyAddress: { type: DataTypes.STRING, allowNull: false },
 })
 
 const UserInfo = sequelize.define('user_info', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    email: {type: DataTypes.STRING, unique: true,},
+    userName: { type: DataTypes.STRING, allowNull: false },
+    companyName: { type: DataTypes.STRING, allowNull: false },
+    companyPhone: { type: DataTypes.STRING, allowNull: false },
+    companyAddress: { type: DataTypes.STRING, allowNull: false },
 })
 
 const Tarif = sequelize.define('tarif', {
@@ -26,14 +26,50 @@ const Tarif = sequelize.define('tarif', {
     functions: {type: DataTypes.STRING, allowNull: true},
 })
 
+const ExtraFunction = sequelize.define('extra_function', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    price: {type: DataTypes.INTEGER, allowNull: true},
+    name: {type: DataTypes.STRING, allowNull: true},
+    description: {type: DataTypes.STRING, allowNull: true},
+})
+
+const UserBank = sequelize.define('user_bank', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    money: {type: DataTypes.INTEGER, allowNull: true},
+    startDate: {type: DataTypes.DATE, allowNull: true},
+    endDate: {type: DataTypes.DATE, allowNull: true},
+})
+
+const PurchasedFunction = sequelize.define('purchased_function', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+})
+
 User.hasOne(UserInfo)
 UserInfo.belongsTo(User)
 
-Tarif.hasMany(User)
-User.belongsTo(Tarif)
+Tarif.hasMany(ExtraFunction)
+ExtraFunction.belongsTo(Tarif)
+
+Tarif.hasMany(UserInfo)
+UserInfo.belongsTo(Tarif)
+
+Tarif.hasMany(UserBank)
+UserBank.belongsTo(Tarif)
+
+User.hasOne(UserBank)
+UserBank.belongsTo(User)
+
+UserBank.hasMany(PurchasedFunction)
+PurchasedFunction.belongsTo(UserBank)
+
+ExtraFunction.hasMany(PurchasedFunction)
+PurchasedFunction.belongsTo(ExtraFunction)
 
 module.exports = {
     User,
     UserInfo,
-    Tarif
+    UserBank,
+    Tarif,
+    ExtraFunction,
+    PurchasedFunction
 }

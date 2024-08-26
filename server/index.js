@@ -26,10 +26,7 @@ const start = async () => {
         await sequelize.authenticate()
         await sequelize.sync()
 
-
-
         TARITFS.forEach(async (e) => {
-
             const tarif = await Tarif.findOne({where: {name: e.name}})
             if (!tarif) {
                 await Tarif.create({
@@ -43,13 +40,10 @@ const start = async () => {
             }
         })
 
-
-
         app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
     } catch (e) {
         console.log(e)
     }
 }
-
 
 start()

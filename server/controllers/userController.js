@@ -1,7 +1,7 @@
 const ApiError = require('../error/ApiError');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {User,  UserInfo /*Basket*/ } = require('../models/models')
+const {User,  UserInfo, UserBank } = require('../models/models')
 
 const generateJwt = (id, email, role) => {
     return jwt.sign(
@@ -34,12 +34,26 @@ class UserController {
             email, 
             role, 
             password: hashPassword,
+        })
+
+        await UserInfo.create({
+            email, 
             userName, 
             companyName, 
             companyPhone, 
             companyAddress,
-            tarifId: 1
+            tarifId: 1,
+            userId: user.id
         })
+
+        await UserBank.create({
+            money: 0,
+            startDate: Date.now(),
+            endDate: Date.now(),
+            tarifId: 1,
+            userId: user.id
+        })
+
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
     }
@@ -48,11 +62,11 @@ class UserController {
         const {email, password} = req.body
         const user = await User.findOne({where: {email}})
         if (!user) {
-            return next(ApiError.internal('Пользователь не найден'))
+            return next(ApiError.badRequest('Пользователь не найден'))
         }
         let comparePassword = bcrypt.compareSync(password, user.password)
         if (!comparePassword) {
-            return next(ApiError.internal('Указан неверный пароль'))
+            return next(ApiError.badRequest('Указан неверный пароль'))
         }
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
@@ -61,18 +75,6 @@ class UserController {
     async check(req, res, next) {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
         return res.json({token})
-    }
-
-    async info(req, res) {
-        const {email} = req.body
-        const {
-            userName,
-            companyName,
-            companyPhone,
-            companyAddress,
-            tarifId
-        } = await User.findOne({where: {email}})
-        return res.json({userName, companyName, companyPhone, companyAddress, tarifId})
     }
 }
 
