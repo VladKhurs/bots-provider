@@ -1,0 +1,21 @@
+change .env
+change db.js
+
+npm install mysql2
+создать БД в 
+http://localhost/phpmyadmin/
+ поместить название бд в .env
+
+
+|| deviceController.js
+    37 limit = Number(limit)
+
+
+api backend:
+
+http://localhost:5000/api/user/registration
+
+
+bots_provider5 - separate data
+
+bots_provider - wort user-full-data
