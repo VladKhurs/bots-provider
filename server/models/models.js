@@ -23,7 +23,7 @@ const Tarif = sequelize.define('tarif', {
     price: {type: DataTypes.INTEGER},
     period: {type: DataTypes.INTEGER},
     limits: {type: DataTypes.STRING, allowNull: true},
-    functions: {type: DataTypes.STRING, allowNull: true},
+    functions: {type: DataTypes.STRING(1024), allowNull: true},
 })
 
 const ExtraFunction = sequelize.define('extra_function', {
@@ -42,6 +42,18 @@ const UserBank = sequelize.define('user_bank', {
 
 const PurchasedFunction = sequelize.define('purchased_function', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+})
+
+const Bot = sequelize.define('bot', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING},
+    logo: {type: DataTypes.STRING},
+})
+
+const Coin = sequelize.define('coin', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    name: {type: DataTypes.STRING},
+    logo: {type: DataTypes.STRING},
 })
 
 User.hasOne(UserInfo)
@@ -65,11 +77,19 @@ PurchasedFunction.belongsTo(UserBank)
 ExtraFunction.hasMany(PurchasedFunction)
 PurchasedFunction.belongsTo(ExtraFunction)
 
+UserBank.hasMany(Bot)
+Bot.belongsTo(UserBank)
+
+UserBank.hasOne(Coin)
+Coin.belongsTo(UserBank)
+
 module.exports = {
     User,
     UserInfo,
     UserBank,
     Tarif,
     ExtraFunction,
-    PurchasedFunction
+    PurchasedFunction,
+    Bot,
+    Coin
 }
