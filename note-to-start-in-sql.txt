@@ -1,0 +1,36 @@
+change .env
+change db.js
+
+npm install mysql2
+создать БД в 
+http://localhost/phpmyadmin/
+ поместить название бд в .env
+
+
+|| deviceController.js
+    37 limit = Number(limit)
+
+
+api backend:
+
+http://localhost:5000/api/user/registration
+
+
+bots_provider5 - separate data
+
+bots_provider - wort user-full-data
+
+
+
+втавить в экран компьютера кортинку 
+
+анимации как минимум 3 эффекта
+
+адаптив
+кнопка перехода вверх, или закрепить менюшку сверху
+
+подключить сео к вордпресу, вордпрес на пус
+
+сделать мини игру к сайту
+
+сделать маленькие руководства по установке вордпресса и тд
