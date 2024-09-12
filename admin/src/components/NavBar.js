@@ -3,7 +3,7 @@ import {Context} from "../index";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import {NavLink} from "react-router-dom";
-import {ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {ADMIN_ROUTE, LOGIN_ROUTE, CLIENTS_ROUTE, BOTS_ROUTE, HISTORY_ROUTE,} from "../utils/consts";
 import {Button} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import Container from "react-bootstrap/Container";
@@ -20,7 +20,7 @@ const NavBar = observer(() => {
     return (
         <Navbar bg="dark" variant="dark">
             <Container style={{display: "flex", flexWrap: "wrap", gap: '10px', alignItems: 'center', justifyContent: 'center'}}>
-                <NavLink style={{color:'white'}} to={SHOP_ROUTE}>КупиДевайс</NavLink>
+                <NavLink style={{color:'white'}} to={ADMIN_ROUTE}>LoyBOT</NavLink>
                 {user.isAuth ?
                     <Nav style={{margin: '0 auto' ,color: 'white', display: "flex", flexWrap: "wrap", gap: '10px', alignItems: 'center', justifyContent: 'center'}}>
                         <Button
@@ -28,6 +28,24 @@ const NavBar = observer(() => {
                             onClick={() => history.push(ADMIN_ROUTE)}
                         >
                             Админ панель
+                        </Button>
+                        <Button
+                            variant={"outline-light"}
+                            onClick={() => history.push(CLIENTS_ROUTE)}
+                        >
+                            Клиенты
+                        </Button>
+                        <Button
+                            variant={"outline-light"}
+                            onClick={() => history.push(BOTS_ROUTE)}
+                        >
+                            Боты
+                        </Button>
+                        <Button
+                            variant={"outline-light"}
+                            onClick={() => history.push(HISTORY_ROUTE)}
+                        >
+                            История операций
                         </Button>
                         <Button
                             variant={"outline-light"}
@@ -44,7 +62,6 @@ const NavBar = observer(() => {
                 }
             </Container>
         </Navbar>
-
     );
 });
 

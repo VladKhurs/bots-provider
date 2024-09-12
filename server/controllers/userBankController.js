@@ -95,6 +95,20 @@ class UserBankController {
             return next(ApiError.badRequest('Неизвестная ошибка'))
         }
     }
+
+    async deletePurchasedFunction(req, res, next) {
+        try {
+            const {userBankId, extraFunctionId} = req.body;
+            let purchasedFunction = await PurchasedFunction.findOne({where: {userBankId, extraFunctionId}});
+            if (!purchasedFunction) {
+                return next(ApiError.badRequest('Такая дополнительная функция не найдена'));
+            }
+            await purchasedFunction.destroy();
+            res.json({purchasedFunction});
+        } catch (e) {
+            return next(ApiError.badRequest('Неизвестная ошибка'));
+        }
+    }
 }
 
 module.exports = new UserBankController()

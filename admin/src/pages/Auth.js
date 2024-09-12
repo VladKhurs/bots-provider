@@ -4,26 +4,29 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import {NavLink, useLocation, useHistory} from "react-router-dom";
-import {LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
-import {login} from "../http/adminAPI";
+import {LOGIN_ROUTE, ADMIN_ROUTE} from "../utils/consts";
+import {loginAdmin} from "../http/adminAPI";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 
 const Auth = observer(() => {
     const {user} = useContext(Context)
+    const {settings} = useContext(Context)
     const location = useLocation()
     const history = useHistory()
     const isLogin = location.pathname === LOGIN_ROUTE
-    const [email, setEmail] = useState('')
+    const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
     const click = async () => {
         try {
-            console.log('email, password', email, password)
-            const data = await login(email, password);
+            console.log('login, password', login, password)
+            const data = await loginAdmin(login, password);
             user.setUser(user)
             user.setIsAuth(true)
-            history.push(SHOP_ROUTE)
+            console.log('loginAdmin', data)
+            settings.setAdminInfo({id: data.id, login: data.login})
+            history.push(ADMIN_ROUTE)
             console.log('data', data)
         } catch (e) {
             alert(e.response.data.message)
@@ -41,9 +44,9 @@ const Auth = observer(() => {
                 <Form className="d-flex flex-column">
                     <Form.Control
                         className="mt-3"
-                        placeholder="Введите ваш email..."
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        placeholder="Введите ваш login..."
+                        value={login}
+                        onChange={e => setLogin(e.target.value)}
                     />
                     <Form.Control
                         className="mt-3"

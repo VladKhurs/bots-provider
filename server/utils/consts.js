@@ -72,11 +72,11 @@ const TARITFS = [
 
 const ADMINS = [
   {
-    email: 'root',
+    login: 'root',
     password: 'root',
   },
   {
-    email: 'admin',
+    login: 'admin',
     password: 'admin',
   }
 ]

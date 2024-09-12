@@ -34,6 +34,19 @@ class userInfoController {
             return next(ApiError.badRequest('Неизвестная ошибка'))
         }
     }
+
+    async getById(req, res) {
+        try {
+            const {id} = req.body
+            const userInfo = await UserInfo.findOne({where: {id}})
+            if (!userInfo) {
+                return next(ApiError.badRequest('Пользователь не найден'))
+            }
+            return res.json(userInfo)
+        } catch (e) {
+            return next(ApiError.badRequest('Неизвестная ошибка'))
+        }
+    }
 }
 
 module.exports = new userInfoController()

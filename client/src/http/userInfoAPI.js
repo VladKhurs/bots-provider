@@ -6,20 +6,6 @@ export const userInfoOne = async (email) => {
   return data
 }
 
-export async function oneUserInfo(emailI/*: { id: string; version: string; actions: Actions[] }*/) {
-  const response = await fetch('http://localhost:5000/api/user_info/one', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      email: emailI
-    }),
-  });
-  const data = await response.json();
-  return data;
-}
-
 /*
 http://localhost:5000/
 

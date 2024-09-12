@@ -20,7 +20,7 @@ const NavBar = observer(() => {
     return (
         <Navbar bg="dark" variant="dark">
             <Container style={{display: "flex", flexWrap: "wrap", gap: '10px', alignItems: 'center', justifyContent: 'center'}}>
-                <NavLink style={{color:'white'}} to={SHOP_ROUTE}>КупиДевайс</NavLink>
+                <NavLink style={{color:'white'}} to={SHOP_ROUTE}>LoyBOT</NavLink>
                 {user.isAuth 
                     ?
                     <Nav style={{margin: '0 auto' ,color: 'white', display: "flex", flexWrap: "wrap", gap: '10px', alignItems: 'center', justifyContent: 'center'}}>

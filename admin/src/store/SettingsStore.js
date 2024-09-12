@@ -3,12 +3,14 @@ import {makeAutoObservable} from "mobx";
 export default class SettingsStore {
     constructor() {
         this._tarifInfo = ''
-        this._purchasedFunctions= ''
-        this._extraFunctionsToBuy= ' '
-        this._allTarifs= ''
-        this._bankInfo= ''
-        this._extraFunctions= ''
-        this._isChanged= ''
+        this._purchasedFunctions = ''
+        this._extraFunctionsToBuy = ' '
+        this._allTarifs = ''
+        this._bankInfo = ''
+        this._extraFunctions = ''
+        this._isChanged = ''
+        this._allUserInfos = ''
+        this._adminInfo = ''
         makeAutoObservable(this)
     }
 
@@ -18,6 +20,22 @@ export default class SettingsStore {
 
     get tarifInfo() {
         return this._tarifInfo
+    }
+
+    setAdminInfo(adminInfo) {
+        this._adminInfo = adminInfo
+    }
+
+    get adminInfo() {
+        return this._adminInfo
+    }
+
+    setAllUserInfos(allUserInfos) {
+        this._allUserInfos = allUserInfos
+    }
+
+    get allUserInfos() {
+        return this._allUserInfos
     }
 
     setAllTarifs(allTarifs) {

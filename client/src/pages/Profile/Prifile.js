@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {Button, Col, Container, Row} from "react-bootstrap";
-import CreateType from "../../components/modals/CreateType";
 import { userInfoOne } from '../../http/userInfoAPI';
 import jwt_decode from "jwt-decode";
 import classes from './profile.module.scss'
@@ -11,7 +10,6 @@ import { fetchExtraFunctions } from '../../http/extraFunctionAPI';
 import { fetchPurchasedFunctions } from '../../http/userBankAPI';
 
 const Profile = () => {
-    const [typeVisible, setTypeVisible] = useState(false)
     const [userInfo, setUserInfo] = useState('')
     const [tarifInfo, setTarifInfo] = useState('')
     const [bankInfo, setBankInfo] = useState('')
@@ -40,14 +38,6 @@ const Profile = () => {
 
     return (
         <Container className="d-flex flex-column">
-            <Button
-                variant={"outline-dark"}
-                className="mt-4 p-2"
-                onClick={() => setTypeVisible(true)}
-            >
-                Добавить тип
-            </Button>
-            <CreateType show={typeVisible} onHide={() => setTypeVisible(false)}/>
             {
                 userInfo === '' ?
                 <div>Loading...</div>

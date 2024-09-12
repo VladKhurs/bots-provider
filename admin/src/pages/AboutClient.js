@@ -15,22 +15,19 @@ import ExtraFunctions from '../components/ExtraFunctions';
 import TarifCard from '../components/TarifCard';
 import {Context} from '../index'
 import DisableExtraFunctions from '../components/DisableExtraFunctions';
+import { userInfoOne } from '../http/userInfoAPI';
+import { useParams } from 'react-router-dom';
 
-const Setings = observer(() => {
+const AboutClient = observer(() => {
     const {settings} = useContext(Context)
-    console.log('tarif.tarif')
-    const token = jwt_decode(localStorage.getItem('token'))
+    const {id} = useParams()
     const [isChanged, setIsChanged] = useState('')
-
-    const onSetTarifInfo = async (state) => {
-        //setIsChanged(Date.now())
-    }
 
     useEffect(async () => {
         try {
-            const purchasedFunctions = await fetchPurchasedFunctions(token.id)
+            const purchasedFunctions = await fetchPurchasedFunctions(id)
             settings.setPurchasedFunctions(purchasedFunctions)
-            const bankInfo = await fetchUserBank(token.id)
+            const bankInfo = await fetchUserBank(id)
             settings.setBankInfo(bankInfo)
             const tarifInfoFetched = await fetchUserTarif(settings.bankInfo.tarifId)
             settings.setTarifInfo(tarifInfoFetched)
@@ -89,7 +86,6 @@ const Setings = observer(() => {
                                     <TarifCard
                                         e={e}
                                         bankInfo={settings.bankInfo}
-                                        onSetTarifInfo={onSetTarifInfo}
                                     />
                                 </Col>
                             ))
@@ -100,4 +96,4 @@ const Setings = observer(() => {
     );
 });
 
-export default Setings;
+export default AboutClient;

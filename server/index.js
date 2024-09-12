@@ -53,10 +53,10 @@ const start = async () => {
         })
 
         ADMINS.forEach(async (e) => {
-            const admin = await Admin.findOne({where: {email: e.email}})
+            const admin = await Admin.findOne({where: {login: e.login}})
             if (!admin) {
                 await Admin.create({
-                    email: e.email,
+                    login: e.login,
                     password: e.password,
                 })
             }

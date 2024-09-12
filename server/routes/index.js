@@ -8,6 +8,7 @@ const tarifRouter = require('./tarifRouter')
 const botRouter = require('./botRouter')
 const coinRouter = require('./coinRouter')
 const extraFunctionRouter = require('./extraFunctionRouter')
+const historyRouter = require('./historyRouter')
 
 router.use('/user', userRouter)
 router.use('/admin', adminRouter)
@@ -17,5 +18,6 @@ router.use('/tarif', tarifRouter)
 router.use('/bot', botRouter)
 router.use('/coin', coinRouter)
 router.use('/extra_function', extraFunctionRouter)
+router.use('/history', historyRouter)
 
 module.exports = router

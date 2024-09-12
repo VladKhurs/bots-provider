@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import { Context } from '..';
 import BuyTarif from "../components/modals/BuyTarif";
 
-const TarifCard = ({e, bankInfo, onSetTarifInfo}) => {
+const TarifCard = ({e, bankInfo}) => {
     const [buyTarifVisible, setBuyTarifVisible] = useState(false)
     const {settings} = useContext(Context)
     return (
@@ -43,7 +43,6 @@ const TarifCard = ({e, bankInfo, onSetTarifInfo}) => {
                             period={e.period} 
                             userId={bankInfo.id}
                             tarifId={e.id}
-                            onSetTarifInfo={onSetTarifInfo}
                             bankInfo={bankInfo}
                         />
                     </>

@@ -4,11 +4,10 @@ import {Button, Form} from "react-bootstrap";
 import {changeTarif} from "../../http/userBankAPI";
 import { Context } from '../..';
 
-const BuyTarif = ({show, onHide, price, period, userId, tarifId, onSetTarifInfo}) => {
+const BuyTarif = ({show, onHide, price, period, userId, tarifId}) => {
     const {settings} = useContext(Context)
     const onChangeTarif = async () => {
         const data = await changeTarif(userId, tarifId)
-        onSetTarifInfo({tarifId})
         settings.setIsChanged(Date.now())
         console.log('tarifId', tarifId)
         console.log(data)

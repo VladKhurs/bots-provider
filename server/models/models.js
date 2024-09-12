@@ -9,7 +9,7 @@ const User = sequelize.define('user', {
 
 const Admin = sequelize.define('admin', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    email: {type: DataTypes.STRING, unique: true,},
+    login: {type: DataTypes.STRING, unique: true,},
     password: {type: DataTypes.STRING},
 })
 
@@ -62,8 +62,19 @@ const Coin = sequelize.define('coin', {
     logo: {type: DataTypes.STRING},
 })
 
+const History = sequelize.define('history', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    date: {type: DataTypes.STRING},
+    time: {type: DataTypes.STRING},
+    managerLogin: {type: DataTypes.STRING},
+    operation: {type: DataTypes.STRING},
+})
+
 User.hasOne(UserInfo)
 UserInfo.belongsTo(User)
+
+Admin.hasMany(History)
+ExtraFunction.belongsTo(Admin)
 
 Tarif.hasMany(ExtraFunction)
 ExtraFunction.belongsTo(Tarif)
@@ -92,6 +103,7 @@ Coin.belongsTo(UserBank)
 module.exports = {
     User,
     Admin,
+    History,
     UserInfo,
     UserBank,
     Tarif,

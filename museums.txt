@@ -1,0 +1,4 @@
+page http://localhost/museums/wp-admin/site-editor.php?postType=wp_template&postId=twentytwentyfour%2F%2Fhome&canvas=edit
+
+admin http://localhost/museums/wp-admin/edit.php?post_type=page
+
