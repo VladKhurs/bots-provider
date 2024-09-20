@@ -1,24 +1,24 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button, Form} from "react-bootstrap";
 import {buyExtraFunction} from "../../http/userBankAPI";
 import { Context } from '../..';
+import { useStore } from '../../state/State';
 
 const BuyExtraFunction = ({show, onHide, price, name, userBankId, extraFunctionId}) => {
-    const {settings} = useContext(Context)
+    const purchasedFunctionsState = useStore((state) => state.purchasedFunctions);
+    const extraFunctionsState = useStore((state) => state.extraFunctions);
+    const {setPurchasedFunctions, setExtraFunctionsToBuy} = useStore()
     const onBuyFunction = async () => {
         const data = await buyExtraFunction(userBankId, extraFunctionId)
         console.log('buyExtraFunction', data)
-        const purchasedFunctions = [...settings.purchasedFunctions, data]
-        settings.setPurchasedFunctions([...purchasedFunctions])
-
-        const purchasedFunctionsIds = settings.purchasedFunctions.map((e)=> {
+        const purchasedFunctions = [...purchasedFunctionsState, data]
+        setPurchasedFunctions([...purchasedFunctions])
+        const purchasedFunctionsIds = purchasedFunctionsState.map((e)=> {
             return e.extraFunctionId
         })
-        const extraFunctions = settings.extraFunctions.filter((e, i)=> !purchasedFunctionsIds.includes(e.id))
-        settings.setExtraFunctionsToBuy(extraFunctions)
-
-        settings.setIsChanged(Date.now())
+        const extraFunctions = extraFunctionsState.filter((e, i)=> !purchasedFunctionsIds.includes(e.id))
+        setExtraFunctionsToBuy(extraFunctions)
         onHide()
     }
     return (

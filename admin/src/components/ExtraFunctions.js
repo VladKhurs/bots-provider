@@ -1,14 +1,18 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Card, Button, Container } from 'react-bootstrap';
 import { Context } from '..';
+import { useStore } from '../state/State';
 import BuyExtraFunction from './modals/BuyExtraFunction';
 
 const ExtraFunctions = ({ bankInfo }) => {
-    const {settings} = useContext(Context)
-    const purchasedFunctionsIds = settings.purchasedFunctions.map((e)=> {
+
+    const purchasedFunctionsState = useStore((state) => state.purchasedFunctions);
+    const extraFunctionsState = useStore((state) => state.extraFunctions);
+
+    const purchasedFunctionsIds = purchasedFunctionsState.map((e)=> {
         return e.extraFunctionId
     })
-    const extraFunctions = settings.extraFunctions.filter((e, i)=> !purchasedFunctionsIds.includes(e.id))
+    const extraFunctions = extraFunctionsState.filter((e, i)=> !purchasedFunctionsIds.includes(e.id))
     const [visibleStates, setVisibleStates] = useState(
         extraFunctions.map(() => false)
     );
@@ -38,7 +42,7 @@ const ExtraFunctions = ({ bankInfo }) => {
                                 <Card.Header as="h5">{e.name}</Card.Header>
                                 <Card.Body>
                                     <Card.Title>{e.price}</Card.Title>
-                                    <Card.Text>{e.description}</Card.Text>
+                                    <Card.Text style={{display: '-webkit-box', WebkitLineClamp: '4', WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{e.description}</Card.Text>
                                     <Button 
                                         variant="dark"
                                         onClick={() => handleShow(i)}

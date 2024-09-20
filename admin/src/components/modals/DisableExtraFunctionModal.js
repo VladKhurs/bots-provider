@@ -1,20 +1,28 @@
-import React, {useState, useContext} from 'react';
+import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button, Form} from "react-bootstrap";
 import {disableExtraFunction} from "../../http/userBankAPI";
 import { Context } from '../..';
 import { createHistoryItem } from '../../http/historyAPI';
+import { useStore } from '../../state/State';
+import jwt_decode from "jwt-decode";
 
 const DisableExtraFunctionModal = ({show, onHide, name, description, userBankId, extraFunctionId}) => {
-    const {settings} = useContext(Context)
+    const adminInfo = useStore((state) => state.adminInfo);
+    const purchasedFunctionsState = useStore((state) => state.purchasedFunctions);
+    const {setPurchasedFunctions} = useStore()
+    let token = localStorage.getItem('token')
+    token = jwt_decode(token)
+    console.log('token', token)
+
     const onDisableFunction = async () => {
         const data = await disableExtraFunction(userBankId, extraFunctionId)
-        const sett = {login: settings.adminInfo.login, id: settings.adminInfo.id}
-        await createHistoryItem('date', 'time', sett.login, 'Отключить дополнительную функцию', sett.id)
-        const purchasedFunctions = settings.purchasedFunctions.filter((fun)=> fun.id !== data.id)
-        settings.setPurchasedFunctions([...purchasedFunctions])
+        await createHistoryItem('date', 'time', token.login, 'Отключить дополнительную функцию', token.id)
+        //date, time, managerLogin, operation, adminId
+        const purchasedFunctions = purchasedFunctionsState.filter((fun)=> fun.id !== data.id)
+        setPurchasedFunctions([...purchasedFunctions])
         console.log('purchasedFunctions1', purchasedFunctions)
-        settings.setIsChanged(Date.now())
+        console.log('data', data)
         onHide()
     }
     return (

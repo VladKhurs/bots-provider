@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button, Container, Row, Table} from "react-bootstrap";
 import { Context } from '..';
 import NavBar from '../components/NavBar';
 import { fetchHistory } from '../http/historyAPI';
+import { useStore } from '../state/State';
 
 const History = () => {
-    const {settings} = useContext(Context)
     const [history, setHistory] = useState('')
     useEffect(async () => {
         try {
@@ -16,6 +16,20 @@ const History = () => {
             console.error(e)
         }
     }, []);
+
+        /*
+        const history = useStore((state) => state.history);
+    const { setHistory } = useStore()
+    useEffect(async () => {
+        try {
+            const historyFetched = await fetchHistory()
+            setHistory(historyFetched)
+            console.log('history', history)
+        } catch(e) {
+            console.error(e)
+        }
+    }, []);
+    */
 
     return (
         <Container className="d-flex flex-column">

@@ -104,7 +104,7 @@ class UserBankController {
                 return next(ApiError.badRequest('Такая дополнительная функция не найдена'));
             }
             await purchasedFunction.destroy();
-            res.json({purchasedFunction});
+            res.json(purchasedFunction);
         } catch (e) {
             return next(ApiError.badRequest('Неизвестная ошибка'));
         }

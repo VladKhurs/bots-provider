@@ -1,12 +1,27 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Button} from "react-bootstrap";
 import Card from 'react-bootstrap/Card';
 import { Context } from '..';
 import BuyTarif from "../components/modals/BuyTarif";
+import { fetchUserTarif } from '../http/tarifAPI';
+import { useStore } from '../state/State';
 
 const TarifCard = ({e, bankInfo}) => {
     const [buyTarifVisible, setBuyTarifVisible] = useState(false)
-    const {settings} = useContext(Context)
+    const {setTarifInfo} = useStore()
+
+    /*
+    useEffect(async () => {
+        const tarifInfoFetched = await fetchUserTarif(bankInfo.tarifId)
+        setTarifInfo(tarifInfoFetched)
+    }, []);
+    */
+
+    const tarifInfo = useStore((state)=> state.tarifInfo)
+    console.log('eee', e)
+    console.log('tarifInfoeee', tarifInfo)
+
+
     return (
         <Card className='mb-4'>
             <Card.Header as="h5">{e.name} тариф</Card.Header>
@@ -14,11 +29,11 @@ const TarifCard = ({e, bankInfo}) => {
                 <Card.Title>Цена: {e.price} еу</Card.Title>
                 <Card.Text>{e.description}</Card.Text>
                 {
-                    settings.tarifInfo === '' 
+                    tarifInfo === '' 
                     ?
                     <Card.Text>Loading...</Card.Text>
                     :
-                    settings.tarifInfo.name === e.name 
+                    tarifInfo.name === e.name 
                     ?
                     <Button 
                         variant="outline-dark" 
@@ -26,7 +41,7 @@ const TarifCard = ({e, bankInfo}) => {
                         className='mb-4 mt-4'
                     >
                         Текущий тариф
-                        </Button>
+                    </Button>
                     :
                     <>
                         <Button

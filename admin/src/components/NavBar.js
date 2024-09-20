@@ -8,20 +8,22 @@ import {Button} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import Container from "react-bootstrap/Container";
 import {useHistory} from 'react-router-dom'
+import { useStore } from '../state/State';
 const NavBar = observer(() => {
-    const {user} = useContext(Context)
+    const isAuthState = useStore((state) => state.isAuth);
+    const { setUser, setIsAuth } = useStore()
     const history = useHistory()
 
     const logOut = () => {
-        user.setUser({})
-        user.setIsAuth(false)
+        setUser({})
+        setIsAuth(false)
     }
 
     return (
         <Navbar bg="dark" variant="dark">
             <Container style={{display: "flex", flexWrap: "wrap", gap: '10px', alignItems: 'center', justifyContent: 'center'}}>
                 <NavLink style={{color:'white'}} to={ADMIN_ROUTE}>LoyBOT</NavLink>
-                {user.isAuth ?
+                {isAuthState ?
                     <Nav style={{margin: '0 auto' ,color: 'white', display: "flex", flexWrap: "wrap", gap: '10px', alignItems: 'center', justifyContent: 'center'}}>
                         <Button
                             variant={"outline-light"}

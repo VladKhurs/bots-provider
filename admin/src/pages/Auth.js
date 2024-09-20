@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {Container, Form} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
@@ -7,11 +7,12 @@ import {NavLink, useLocation, useHistory} from "react-router-dom";
 import {LOGIN_ROUTE, ADMIN_ROUTE} from "../utils/consts";
 import {loginAdmin} from "../http/adminAPI";
 import {observer} from "mobx-react-lite";
-import {Context} from "../index";
+import { useStore } from '../state/State';
+import LoginForm from '../components/LoginForm/LoginForm'
 
 const Auth = observer(() => {
-    const {user} = useContext(Context)
-    const {settings} = useContext(Context)
+    const userFetched = useStore((state) => state.user);
+    const { setUser, setIsAuth, setAdminInfo } = useStore()
     const location = useLocation()
     const history = useHistory()
     const isLogin = location.pathname === LOGIN_ROUTE
@@ -22,10 +23,10 @@ const Auth = observer(() => {
         try {
             console.log('login, password', login, password)
             const data = await loginAdmin(login, password);
-            user.setUser(user)
-            user.setIsAuth(true)
+            setUser(userFetched)
+            setIsAuth(true)
             console.log('loginAdmin', data)
-            settings.setAdminInfo({id: data.id, login: data.login})
+            setAdminInfo({id: null, login: login})
             history.push(ADMIN_ROUTE)
             console.log('data', data)
         } catch (e) {
@@ -65,6 +66,8 @@ const Auth = observer(() => {
                     </Row>
                 </Form>
             </Card>
+
+            <LoginForm></LoginForm>
         </Container>
     );
 });

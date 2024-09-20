@@ -1,9 +1,8 @@
-import {ADMIN_ROUTE, LOGIN_ROUTE, CLIENTS_ROUTE, BOTS_ROUTE, HISTORY_ROUTE, CLIENT_ROUTE, BEARS_ROUTE} from "./utils/consts";
+import {ADMIN_ROUTE, LOGIN_ROUTE, CLIENTS_ROUTE, BOTS_ROUTE, HISTORY_ROUTE, CLIENT_ROUTE} from "./utils/consts";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import History from "./pages/History";
 import Bots from "./pages/Bots";
-import Bears from "./pages/Bears";
 import Clients from "./pages/Clients";
 import AboutClient from "./pages/AboutClient";
 
@@ -19,10 +18,6 @@ export const authRoutes = [
     {
         path: BOTS_ROUTE,
         Component: Bots
-    },
-    {
-        path: BEARS_ROUTE,
-        Component: Bears
     },
     {
         path: HISTORY_ROUTE,

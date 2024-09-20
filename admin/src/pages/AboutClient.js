@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Container} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -17,36 +17,54 @@ import {Context} from '../index'
 import DisableExtraFunctions from '../components/DisableExtraFunctions';
 import { userInfoOne } from '../http/userInfoAPI';
 import { useParams } from 'react-router-dom';
+import { useStore } from '../state/State';
 
 const AboutClient = observer(() => {
-    const {settings} = useContext(Context)
     const {id} = useParams()
-    const [isChanged, setIsChanged] = useState('')
+    const store = useStore()
+    const bankInfo = useStore((state) => state.bankInfo);
+    const purchasedFunctions = useStore((state) => state.purchasedFunctions);
+    const extraFunctionsToBuy = useStore((state) => state.extraFunctionsToBuy);
+    const extraFunctions = useStore((state) => state.extraFunctions);
+    const tarifInfo = useStore((state) => state.tarifInfo);
+    const {allTarifs} = store
+    const isChanged = useStore((state) => state.isChanged);
+    const {
+        setPurchasedFunctions, 
+        setBankInfo, 
+        setTarifInfo, 
+        setExtraFunctions,
+        setAllTarifs,
+    } = useStore()
 
-    useEffect(async () => {
-        try {
-            const purchasedFunctions = await fetchPurchasedFunctions(id)
-            settings.setPurchasedFunctions(purchasedFunctions)
-            const bankInfo = await fetchUserBank(id)
-            settings.setBankInfo(bankInfo)
-            const tarifInfoFetched = await fetchUserTarif(settings.bankInfo.tarifId)
-            settings.setTarifInfo(tarifInfoFetched)
-            const extraFunctions = await fetchExtraFunctionsWhereTarif(settings.bankInfo.tarifId)
-            settings.setExtraFunctions(extraFunctions)
-            const allTarifs = await fetchAllTarifs()
-            settings.setAllTarifs(allTarifs)
-        } catch(e) {
-            console.error(e)
-        }
-    }, [settings.isChanged]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const purchasedFunctions = await fetchPurchasedFunctions(id);
+                setPurchasedFunctions(purchasedFunctions);
+                const bankInfo = await fetchUserBank(id);
+                setBankInfo(bankInfo);
+                const tarifInfoFetched = await fetchUserTarif(bankInfo.tarifId);
+                setTarifInfo(tarifInfoFetched);
+                const extraFunctions = await fetchExtraFunctionsWhereTarif(bankInfo.tarifId);
+                setExtraFunctions(extraFunctions);
+                const allTarifs = await fetchAllTarifs();
+                setAllTarifs(allTarifs);
+            } catch(e) {
+                console.error(e);
+            }
+        };
+        fetchData();
+    }, [isChanged]);
+
     return (
         <Container>
             {
-                settings.purchasedFunctions === ''
+                purchasedFunctions === ''
                 ?
                 <div>Loading...</div>
                 :
-                settings.purchasedFunctions.length === 0
+                purchasedFunctions.length === 0
                 ?
                 <></>
                 :
@@ -59,33 +77,33 @@ const AboutClient = observer(() => {
 
             <div className='h5 mt-4 mb-4'>Подключить дополнительные функции: </div> 
             {
-                settings.extraFunctionsToBuy.length === 0
+                extraFunctionsToBuy.length === 0
                 ?
                 <div>Вы подключили все имеющиеся дополнительные функции</div>
                 :
-                settings.extraFunctions.length === 0
+                extraFunctions.length === 0
                 ?
-                <div>На вашем тарифе "{settings.tarifInfo.name}" нельзя подключить дополнительные функции</div>
+                <div>На вашем тарифе "{tarifInfo.name}" нельзя подключить дополнительные функции</div>
                 :
                 <ExtraFunctions
-                    extraFunctions={settings.extraFunctions}
-                    bankInfo={settings.bankInfo}
+                    extraFunctions={extraFunctions}
+                    bankInfo={bankInfo}
                 />
             }
 
             <div className='h5 m-4 d-flex' >Достурные тарифы</div> 
                 {   
-                    settings.allTarifs === ''
+                    allTarifs === ''
                     ?
                     <div>Loading...</div>
                     :
                     <Row>
                         {
-                            settings.allTarifs.map((e) => (
+                            allTarifs.map((e) => (
                                 <Col>
                                     <TarifCard
                                         e={e}
-                                        bankInfo={settings.bankInfo}
+                                        bankInfo={bankInfo}
                                     />
                                 </Col>
                             ))

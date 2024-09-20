@@ -1,17 +1,20 @@
-import React, {useState,useContext} from 'react';
+import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
 import {Button, Form} from "react-bootstrap";
 import {changeTarif} from "../../http/userBankAPI";
 import { Context } from '../..';
+import { useStore } from '../../state/State';
 
 const BuyTarif = ({show, onHide, price, period, userId, tarifId}) => {
-    const {settings} = useContext(Context)
+    const tarifInfo = useStore((state) => state.tarifInfo);
+    const {setIsChanged, setTarifInfo} = useStore()
     const onChangeTarif = async () => {
         const data = await changeTarif(userId, tarifId)
-        settings.setIsChanged(Date.now())
         console.log('tarifId', tarifId)
-        console.log(data)
+        console.log('tarifId data',data)
         onHide()
+        //onSetTarifInfo(data)
+        setIsChanged(Date.now())
     }
     return (
         <Modal
@@ -21,7 +24,7 @@ const BuyTarif = ({show, onHide, price, period, userId, tarifId}) => {
         >
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Стоимость тарифа "{settings.tarifInfo.name}": {price} уе
+                    Стоимость тарифа "{tarifInfo.name}": {price} уе
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>

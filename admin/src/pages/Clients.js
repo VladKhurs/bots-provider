@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Container} from "react-bootstrap";
 import { userInfoAll } from '../http/userInfoAPI';
 import Row from "react-bootstrap/Row";
@@ -12,21 +12,26 @@ import Table from 'react-bootstrap/Table';
 import { fetchAllTarifs } from '../http/tarifAPI';
 import { useHistory } from 'react-router-dom';
 import { CLIENT_ROUTE } from '../utils/consts';
+import { useStore } from '../state/State';
 
 const Clients = observer(() => {
     const history = useHistory()
-    const {settings} = useContext(Context)
     const token = jwt_decode(localStorage.getItem('token'))
-    const [allTarifsIds, setAllTarifsIds] = useState('')
+
+    const allTarifs = useStore((state) => state.allTarifs);
+    const allUserInfos = useStore((state) => state.allUserInfos);
+    const allTarifsIds = useStore((state) => state.allTarifsIds);
+    const {setAllUserInfos, setAllTarifs, setAllTarifsIds} = useStore()
+
     useEffect(async () => {
         try {
-            const allUserInfos = await userInfoAll()
-            settings.setAllUserInfos(allUserInfos)
+            const allUserInfosFetched = await userInfoAll()
+            setAllUserInfos(allUserInfosFetched)
             const allTarifs = await fetchAllTarifs()
             const ids = allTarifs.map((e) => e.id)
             setAllTarifsIds(ids)
-            settings.setAllTarifs(allTarifs)
-            console.log('settings.allTarifs' ,settings.allTarifs, allTarifsIds)
+            setAllTarifs(allTarifs)
+            console.log('allTarifs' , allTarifs, allTarifsIds)
         } catch(e) {
             console.error(e)
         }
@@ -36,15 +41,15 @@ const Clients = observer(() => {
         <Container>
             <Row className="mt-2">
                 {
-                    settings.allUserInfos === ""
+                    allUserInfos === "" || allTarifsIds === ''
                     ?  
                     <div>Loading...</div>
                     :
-                    settings.allTarifs === ''
+                    allTarifs === ''
                     ?  
                     <div>Loading...</div>
                     :
-                    settings.allUserInfos.length === 0
+                    allUserInfos.length === 0
                     ?
                     <div>Пользователи отсутствуют</div>
                     :
@@ -59,9 +64,9 @@ const Clients = observer(() => {
                                 </thead>
                                 <tbody>
                                     {
-                                        settings.allUserInfos.map((e)=> {
+                                        allUserInfos.map((e)=> {
                                             const tarifIndex = allTarifsIds.indexOf(e.tarifId)
-                                            const tarifName = settings.allTarifs[tarifIndex].name
+                                            const tarifName = allTarifs[tarifIndex].name
                                             console.log('tarifName', tarifName)
                                             return (
                                                 <tr>

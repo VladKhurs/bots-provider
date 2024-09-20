@@ -1,16 +1,21 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
 import { Context } from '..';
+import { useStore } from '../state/State';
 import DisableExtraFunctionModal from './modals/DisableExtraFunctionModal';
 
 const DisableExtraFunctions = () => {
-    const {settings} = useContext(Context)
-    const extraFunctions = [...settings.extraFunctions]
-    const purchasedFunctionsIds = settings.purchasedFunctions.map((e)=> {
+
+    const extraFunctionsState = useStore((state) => state.extraFunctions);
+    const purchasedFunctionsState = useStore((state) => state.purchasedFunctions);
+    const bankInfoState = useStore((state) => state.bankInfo);
+
+    const extraFunctions = [...extraFunctionsState]
+    const purchasedFunctionsIds = purchasedFunctionsState.map((e)=> {
         return e.extraFunctionId
     })
     const purchasedFunctions = extraFunctions.filter((e, i)=> purchasedFunctionsIds.includes(e.id))
-    const bankInfo = settings.bankInfo
+    const bankInfo = bankInfoState
     
     const [visibleStates, setVisibleStates] = useState(
         extraFunctions.map(() => false)

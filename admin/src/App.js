@@ -1,20 +1,20 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar";
 import {observer} from "mobx-react-lite";
-import {Context} from "./index";
 import {check} from "./http/adminAPI";
 import {Spinner} from "react-bootstrap";
+import { useStore } from './state/State';
 
 const App = observer(() => {
-    const {user} = useContext(Context)
+    const {setUser, setIsAuth} = useStore()
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         check().then(data => {
-            user.setUser(true)
-            user.setIsAuth(true)
+            setUser(true)
+            setIsAuth(true)
         }).finally(() => setLoading(false))
     }, [])
 
