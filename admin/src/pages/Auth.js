@@ -66,8 +66,6 @@ const Auth = observer(() => {
                     </Row>
                 </Form>
             </Card>
-
-            <LoginForm></LoginForm>
         </Container>
     );
 });

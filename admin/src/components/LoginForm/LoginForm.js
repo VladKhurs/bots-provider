@@ -108,6 +108,7 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [type, setType] = useState('password');
   const [icon, setIcon] = useState(eyeOff);
+  const [errorType, setErrorType] = useState('');
 
   const handleToggle = () => {
     if (type === 'password') {
@@ -135,8 +136,17 @@ function LoginForm() {
   const validatePassword = (value) => {
     const hasNumber = /\d/;
     const hasUpperCase = /[A-Z]/;
+    if (value.length >= 8) {
+      setErrorType('Пароль должен содиржать минимум 8 символов')
+      return false
+    }
+    if (hasNumber.test(value)) {
+      setErrorType('Пароль должен содиржать минимум 1 букву')
+      return false
+    }
+    
     //return value.length >= 8 && hasNumber.test(value) && hasUpperCase.test(value);
-    return value.length >= 8
+    return true
   };
 
   return (
@@ -153,7 +163,7 @@ function LoginForm() {
             isInvalid={validated && !validateLogin(login)}
           />
           <Form.Control.Feedback type="invalid">
-            Логин слишком короткий
+            {errorType}
           </Form.Control.Feedback>
         </Form.Group>
       </Row>

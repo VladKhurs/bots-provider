@@ -55,7 +55,27 @@ const AboutClient = observer(() => {
             }
         };
         fetchData();
-    }, [isChanged]);
+    }, []);
+
+    /*useEffect(() => {
+        const fetchData = async () => {
+            try {
+                //const purchasedFunctions = await fetchPurchasedFunctions(id);
+                //setPurchasedFunctions(purchasedFunctions);
+                const bankInfo = await fetchUserBank(id);
+                setBankInfo(bankInfo);
+                const tarifInfoFetched = await fetchUserTarif(bankInfo.tarifId);
+                setTarifInfo(tarifInfoFetched);
+                const extraFunctions = await fetchExtraFunctionsWhereTarif(bankInfo.tarifId);
+                setExtraFunctions(extraFunctions);
+                const allTarifs = await fetchAllTarifs();
+                setAllTarifs(allTarifs);
+            } catch(e) {
+                console.error(e);
+            }
+        };
+        fetchData();
+    }, [isChanged]);*/
 
     return (
         <Container>

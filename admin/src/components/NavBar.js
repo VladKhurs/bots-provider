@@ -19,6 +19,8 @@ const NavBar = observer(() => {
         setIsAuth(false)
     }
 
+    
+
     return (
         <Navbar bg="dark" variant="dark">
             <Container style={{display: "flex", flexWrap: "wrap", gap: '10px', alignItems: 'center', justifyContent: 'center'}}>

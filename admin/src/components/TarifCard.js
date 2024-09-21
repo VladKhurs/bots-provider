@@ -26,7 +26,7 @@ const TarifCard = ({e, bankInfo}) => {
         <Card className='mb-4'>
             <Card.Header as="h5">{e.name} тариф</Card.Header>
             <Card.Body>
-                <Card.Title>Цена: {e.price} еу</Card.Title>
+                <Card.Title>Цена: {e.price} уе</Card.Title>
                 <Card.Text>{e.description}</Card.Text>
                 {
                     tarifInfo === '' 
